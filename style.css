@@ -1,6 +1,12 @@
+.table .empty-row {
+  display: none;
+}
 .table .row .name,
 .table .row .type,
 .table .row .color {
   padding: 1rem;
   border: 1px solid black;
+}
+.table .row .number {
+  cursor: move;
 }
