@@ -1,0 +1,6 @@
+.table .row .name,
+.table .row .type,
+.table .row .color {
+  padding: 1rem;
+  border: 1px solid black;
+}
