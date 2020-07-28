@@ -5,19 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Table Editor</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="spectrum.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
+    <script src="spectrum.min.js"></script>
+      
   </head>
   <body>
+    <div class="table-wrapper">
     <table class="table">
       <tr class="empty-row" >
         <td><div class="number" ></div></td>
         <td><div class="name" contenteditable="true"></div></td>
         <td><div class="type" contenteditable="true"></div></td>
-        <td><div class="color"></div></td>
+        <td><div class="color-text">#000000</div><div class="color"></div></td>
         <td><button class="delete" >delete</button></td>
       </tr>
     </table>
     <button class="add-row">add</button>
+    <button class="save">save</button>
+    <input type="file" class="load-file">
+    <button class="load">Load</button> 
+  
+    <input class="color-picker hide" value='#000000' />
+    </div>
+  
 
   </body>
 </html>
