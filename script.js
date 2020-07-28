@@ -1,14 +1,41 @@
 class Table {
   constructor() {
+    let table = this;
+    $(".color-picker").spectrum({
+      type: "text",
+      showInitial: true,
+      showInput: true,
+      showPalette: false,
+      preferredFormat: "hex",
+      appendTo: ".color-formats",
+
+      change: function (color) {
+        table.colorElement.style.backgroundColor = color.toLocaleString();
+        table.colorElement.parentNode.querySelector(".color-text").innerText = color.toLocaleString();
+      },
+      move: function (color) {
+        table.colorElement.style.backgroundColor = color.toLocaleString();
+        table.colorElement.parentNode.querySelector(".color-text").innerText = color.toLocaleString();
+      },
+      hide: function (color) {
+        table.colorElement.style.backgroundColor = color.toLocaleString();
+        table.colorElement.parentNode.querySelector(".color-text").innerText = color.toLocaleString();
+      },
+    });
+
     this.tableWrapperNode = document.querySelector(".table-wrapper");
     this.tableNode = document.querySelector(".table tbody");
     this.rows = this.tableNode.getElementsByClassName("row");
     this.rowNode = document.querySelector(".empty-row");
-    this.colorNode = document.querySelector(".color-picker");
 
     this.movingElement = false;
     this.previousMoving = false;
     this.colorElement = null;
+    this.selectedElement = null;
+
+    this.tableWrapperNode.querySelector(".color-formats select").addEventListener("change", () => {
+      $(".color-picker").spectrum("option", "preferredFormat", this.tableWrapperNode.querySelector(".color-formats select").value);
+    });
 
     this.tableWrapperNode.querySelector(".add-row").addEventListener("click", () => {
       this.addRow();
@@ -43,12 +70,31 @@ class Table {
     });
 
     document.addEventListener("mouseup", () => {
+      document.querySelector("body").classList.remove("grabbing");
       this.movingElement = false;
     });
 
-    document.addEventListener("click", () => {
-      this.colorNode.classList.add("hide");
+    document.addEventListener("click", (event) => {
+      if (this.tableNode.contains(event.target)) {
+        return;
+      }
+      if (this.selectedElement) {
+        this.selectedElement.classList.remove("selected");
+        this.selectedElement = null;
+      }
     });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.code === "Delete") {
+        this.removeRow(this.selectedElement);
+      }
+    });
+
+    if (this.rows.length < 1) {
+      for (let i = 0; i < 10; i++) {
+        this.addRow();
+      }
+    }
   }
 
   addRow(row) {
@@ -57,17 +103,34 @@ class Table {
     element.classList.add("row");
 
     element.querySelector(".number").innerText = this.rows.length;
-    element.querySelector(".delete").addEventListener("click", () => {
-      this.removeRow(element);
-    });
-
-    element.querySelector(".number").addEventListener("mousedown", () => {
+    element.querySelector(".number").addEventListener("mousedown", (event) => {
       this.movingElement = element;
+      document.querySelector("body").classList.add("grabbing");
+      if (this.selectedElement) {
+        this.selectedElement.classList.remove("selected");
+      }
+      this.selectedElement = element;
+      this.selectedElement.classList.add("selected");
       this.previousMoving = false;
+      event.stopPropagation();
     });
 
     element.querySelector(".color").addEventListener("click", () => {
       this.colorPick(element.querySelector(".color"));
+    });
+
+    element.querySelector(".name").addEventListener("focus", () => {
+      if (this.selectedElement) {
+        this.selectedElement.classList.remove("selected");
+      }
+      this.selectedElement = null;
+    });
+
+    element.querySelector(".type").addEventListener("focus", () => {
+      if (this.selectedElement) {
+        this.selectedElement.classList.remove("selected");
+      }
+      this.selectedElement = null;
     });
 
     if (row !== undefined) {
@@ -81,8 +144,10 @@ class Table {
   }
 
   removeRow(element) {
-    this.tableNode.removeChild(element);
-    this.reCount();
+    try {
+      this.tableNode.removeChild(element);
+      this.reCount();
+    } catch (e) {}
   }
 
   reCount() {
@@ -112,17 +177,20 @@ class Table {
     this.movingElement.querySelector(".color-text").innerText = repalceColor;
     this.movingElement.querySelector(".color").style.backgroundColor = repalceColor;
     this.previousMoving = num;
+    this.movingElement.classList.remove("selected");
     this.movingElement = replaceNode;
+    this.movingElement.classList.add("selected");
+    this.selectedElement = this.movingElement;
   }
 
   colorPick(element) {
-    this.colorNode.style.left = element.getBoundingClientRect().x + "px";
-    this.colorNode.style.top = element.getBoundingClientRect().y + element.getBoundingClientRect().height + "px";
-    this.colorNode.classList.remove("hide");
     this.colorElement = element;
     setTimeout(() => {
       $(".color-picker").spectrum("set", window.getComputedStyle(element).backgroundColor);
       $(".color-picker").spectrum("show");
+      let pickerNode = document.querySelector(".sp-container");
+      pickerNode.style.left = element.getBoundingClientRect().x - pickerNode.getBoundingClientRect().width - 2 + "px";
+      pickerNode.style.top = element.getBoundingClientRect().y + element.getBoundingClientRect().height + 3 + "px";
     }, 1);
     event.stopPropagation();
   }
@@ -168,14 +236,4 @@ class Table {
 
 window.addEventListener("load", () => {
   let table = new Table();
-  $(".color-picker").spectrum({
-    type: "text",
-    showInitial: "true",
-    showPalette: false,
-    change: function (color) {
-      table.colorElement.style.backgroundColor = color.toLocaleString();
-      table.colorElement.parentNode.querySelector(".color-text").innerText = color.toLocaleString();
-      table.colorNode.classList.add("hide");
-    },
-  });
 });

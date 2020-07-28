@@ -1,17 +1,79 @@
+.table {
+  font-size: 16px;
+  border-collapse: collapse;
+  border: 1px solid #9e9e9e;
+}
+.table th,
+.table td {
+  border: 1px solid #9e9e9e;
+}
+.table th {
+  background-color: #f1f1f1;
+  color: #9e9e9e;
+  font-weight: normal;
+}
+.table td {
+  width: 200px;
+  padding: 0.2em;
+}
 .table .empty-row {
   display: none;
 }
-.table .row .name,
-.table .row .type,
-.table .row .color {
-  padding: 1rem;
-  border: 1px solid black;
-}
 .table .row .number {
-  cursor: move;
+  cursor: grab;
+  width: auto;
+  padding: 0 0.5em;
+  background-color: #f1f1f1;
+  color: #9e9e9e;
 }
 .table .row .color {
+  height: 1.5em;
+  width: 1.5em;
   background-color: black;
+  float: right;
+}
+.table .row .color-text {
+  float: left;
+  height: 1.5em;
+  display: flex;
+  align-items: center;
+}
+.table .row .name:focus,
+.table .row .type:focus {
+  border: 2px solid black;
+  outline: none;
+}
+.table .add-row {
+  width: auto;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: monospace;
+  cursor: pointer;
+}
+.table .save-load-td {
+  padding: 0;
+  background-color: #f1f1f1;
+  text-align: end;
+}
+.table .save-load-td .save,
+.table .save-load-td .load {
+  background-color: #3f51b5;
+  border: none;
+  color: white;
+  padding: 0.3em;
+  font-size: 1em;
+  cursor: pointer;
+}
+.moving {
+  background-color: #9e9e9e;
+}
+.selected {
+  background-color: #9e9e9e;
 }
 .hide {
   display: none !important;
@@ -21,7 +83,27 @@
 }
 .color-picker {
   position: absolute;
+  height: 2em;
+  margin: 0.2em 0;
+  border: none;
+  padding: 0.5em;
 }
 .load-file {
   display: none;
+}
+.color-formats {
+  display: inline-block;
+}
+.color-formats select {
+  border: 1px solid #9e9e9e;
+  background-color: #9e9e9e;
+  color: white;
+  outline: none;
+  font-size: 1em;
+}
+.grabbing {
+  cursor: grabbing !important;
+}
+.grabbing .number {
+  cursor: grabbing !important;
 }

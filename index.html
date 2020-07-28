@@ -13,22 +13,37 @@
   <body>
     <div class="table-wrapper">
       <table class="table">
+        <tfoot>
+          <tr class="tfoot">
+            <td class="add-row">+</td>
+            <td class="save-load-td" colspan="3">
+              <button class="save">Save</button>
+              <input type="file" class="load-file" />
+              <button class="load">Load</button>
+            </td>
+          </tr>
+        </tfoot>
+        <th></th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Color
+          <div class="color-formats">
+            <select>
+              <option>hex</option>
+              <option>rgb</option>
+            </select>
+          </div>
+        </th>
         <tr class="empty-row">
-          <td><div class="number"></div></td>
-          <td><div class="name" contenteditable="true"></div></td>
-          <td><div class="type" contenteditable="true"></div></td>
-          <td>
-            <div class="color-text">#000000</div>
+          <td class="number"></td>
+          <td class="name" contenteditable="true"></td>
+          <td class="type" contenteditable="true"></td>
+          <td class="color-td">
+            <div class="color-text" >#000000</div>
             <div class="color"></div>
           </td>
-          <td><button class="delete">delete</button></td>
         </tr>
       </table>
-      <button class="add-row">add</button>
-      <button class="save">save</button>
-      <input type="file" class="load-file" />
-      <button class="load">Load</button>
-
       <input class="color-picker hide" value="#000000" />
     </div>
   </body>
